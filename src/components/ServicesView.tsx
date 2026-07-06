@@ -1,5 +1,6 @@
-import { motion } from 'motion/react';
-import { Building2, Home, Sun, Factory, CheckCircle2, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Building2, Home, Sun, Factory, CheckCircle2, ArrowRight, X } from 'lucide-react';
 import ShaderBackground from './ShaderBackground';
 
 interface ServicesViewProps {
@@ -14,9 +15,18 @@ export default function ServicesView({
   setChatbotWelcomeMessage,
 }: ServicesViewProps) {
   
+  const [selectedService, setSelectedService] = useState<{
+    title: string;
+    desc: string;
+    subText: string;
+    points: string[];
+    icon: any;
+  } | null>(null);
+
   const handleServiceInquiry = (serviceName: string) => {
     setChatbotWelcomeMessage(`Hello! I'd be happy to discuss our "${serviceName}" services. Do you have specific monthly energy requirements or details about your site that we should analyze?`);
     setChatbotOpen(true);
+    setSelectedService(null);
   };
 
   const servicesList = [
@@ -89,7 +99,8 @@ export default function ServicesView({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
-                  className="p-8 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md hover:bg-white/15 hover:shadow-2xl hover:border-solar-red/30 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between"
+                  onClick={() => setSelectedService(srv)}
+                  className="p-8 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md hover:bg-white/15 hover:shadow-2xl hover:border-solar-red/30 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between cursor-pointer"
                 >
                   <div className="space-y-6">
                     {/* Service Icon */}
@@ -101,35 +112,10 @@ export default function ServicesView({
                       <h3 className="font-headline-md text-xl font-bold text-white tracking-tight">
                         {srv.title}
                       </h3>
-                      <p className="font-body-md text-sm text-gray-200 leading-relaxed font-sans">
+                      <p className="font-body-md text-sm text-gray-200 leading-relaxed font-sans line-clamp-3">
                         {srv.desc}
                       </p>
-                      {srv.subText && (
-                        <p className="font-body-md text-sm text-gray-300 leading-relaxed font-sans italic">
-                          {srv.subText}
-                        </p>
-                      )}
                     </div>
-
-                    {/* Bullet points checklist */}
-                    <ul className="space-y-2 pt-2">
-                      {srv.points.map((pt) => (
-                        <li key={pt} className="flex items-center gap-2 text-xs text-white font-semibold font-sans">
-                          <CheckCircle2 className="h-4 w-4 text-solar-red flex-shrink-0" />
-                          <span>{pt}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-8 font-sans">
-                    <button
-                      onClick={() => handleServiceInquiry(srv.title)}
-                      className="textured-glass-btn inline-flex items-center gap-1.5 px-5 py-3 rounded text-xs font-bold uppercase tracking-wider text-solar-red hover:text-white cursor-pointer"
-                    >
-                      <span>Inquire About This Service</span>
-                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1.5 transition-transform" />
-                    </button>
                   </div>
                 </motion.div>
               );
@@ -138,7 +124,7 @@ export default function ServicesView({
         </section>
 
         {/* Call to Action Bar */}
-        <section className="bg-industrial-charcoal/90 backdrop-blur-md py-16 mx-6 md:mx-16 rounded-2xl text-white overflow-hidden relative shadow-2xl border border-white/5">
+        <section className="bg-industrial-charcoal/90 backdrop-blur-md py-16 mx-6 md:mx-16 rounded-2xl text-white overflow-hidden relative shadow-2xl border border-white/5 mt-8">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="relative z-10 max-w-5xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
             <div className="space-y-2">
@@ -154,7 +140,7 @@ export default function ServicesView({
                 setCurrentView('contact');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="bg-solar-red hover:bg-red-700 text-white font-bold uppercase tracking-wider text-xs px-8 h-14 rounded hover:scale-105 active:scale-98 transition-all duration-300 shadow-lg shadow-solar-red/20 cursor-pointer"
+              className="bg-solar-red hover:bg-red-700 text-white font-bold uppercase tracking-wider text-xs px-8 h-14 rounded hover:scale-105 active:scale-98 transition-all duration-300 shadow-lg shadow-solar-red/20 cursor-pointer flex-shrink-0"
             >
               Get Detailed Proposal
             </button>
@@ -162,6 +148,85 @@ export default function ServicesView({
         </section>
 
       </div>
+
+      {/* Service Details Modal */}
+      <AnimatePresence>
+        {selectedService && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedService(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-2xl bg-gradient-to-br from-zinc-200 to-zinc-300 border border-zinc-400 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Modal Header */}
+              <div className="p-6 md:p-8 bg-zinc-300/50 backdrop-blur-md border-b border-zinc-400/50 flex justify-between items-start gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-zinc-100 border border-zinc-300 flex items-center justify-center text-solar-red flex-shrink-0 shadow-sm">
+                    <selectedService.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-headline-md text-2xl font-bold text-industrial-charcoal tracking-tight leading-tight">
+                    {selectedService.title}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setSelectedService(null)}
+                  className="p-2 text-zinc-600 hover:text-industrial-charcoal hover:bg-zinc-400/50 rounded-full transition-colors cursor-pointer"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 md:p-8 space-y-6 flex-grow overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="space-y-4">
+                  <p className="font-body-md text-base text-zinc-800 leading-relaxed font-sans">
+                    {selectedService.desc}
+                  </p>
+                  {selectedService.subText && (
+                    <p className="font-body-md text-sm text-zinc-700 leading-relaxed font-sans italic bg-zinc-300/40 p-4 rounded-lg border border-zinc-400/50 shadow-sm">
+                      {selectedService.subText}
+                    </p>
+                  )}
+                </div>
+
+                {selectedService.points.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <h4 className="font-bold text-industrial-charcoal uppercase tracking-wider text-xs mb-4">Key Benefits & Features</h4>
+                    <ul className="space-y-3">
+                      {selectedService.points.map((pt) => (
+                        <li key={pt} className="flex items-start gap-3 text-sm text-zinc-800 font-sans bg-zinc-300/40 p-3 rounded-lg border border-zinc-400/50 hover:bg-zinc-300/80 hover:shadow-md transition-all">
+                          <CheckCircle2 className="h-5 w-5 text-solar-red flex-shrink-0" />
+                          <span className="pt-0.5">{pt}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 md:p-8 bg-zinc-300/50 backdrop-blur-sm border-t border-zinc-400/50 flex justify-end">
+                <button
+                  onClick={() => handleServiceInquiry(selectedService.title)}
+                  className="w-full sm:w-auto bg-solar-red hover:bg-red-700 text-white font-bold uppercase tracking-wider px-8 h-12 rounded hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-lg shadow-solar-red/20 cursor-pointer flex items-center justify-center gap-2 text-sm"
+                >
+                  <span>Inquire About This Service</span>
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+

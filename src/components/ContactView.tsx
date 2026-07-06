@@ -22,6 +22,7 @@ export default function ContactView({
     phone: '',
     location: '',
     monthlyBill: '',
+    monthlyUnits: '',
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -57,6 +58,7 @@ export default function ContactView({
       phone: '',
       location: '',
       monthlyBill: '',
+      monthlyUnits: '',
     });
     setIsSubmitted(false);
     clearProposalData();
@@ -209,6 +211,20 @@ export default function ContactView({
                           placeholder="e.g. ₹2000"
                         />
                       </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-500 font-sans block">
+                        Monthly Electricity Units
+                      </label>
+                      <input
+                        type="text"
+                        name="monthlyUnits"
+                        value={formData.monthlyUnits}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-200 rounded px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-solar-red focus:bg-white transition-colors"
+                        placeholder="e.g. 500 kWh"
+                      />
                     </div>
 
                     <button

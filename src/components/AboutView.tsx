@@ -177,6 +177,62 @@ export default function AboutView({ setChatbotOpen, setChatbotWelcomeMessage }: 
           </div>
         </section>
 
+        {/* Our Team Section */}
+        <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-white/10">
+          <div className="mb-12">
+            <h2 className="font-headline-lg text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase">
+              Our Team
+            </h2>
+            <div className="w-24 h-1.5 bg-solar-red rounded" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              {
+                name: 'Alex Mercer',
+                role: 'Chief Executive Officer',
+                img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80'
+              },
+              {
+                name: 'Sarah Jenkins',
+                role: 'Chief Technology Officer',
+                img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80'
+              },
+              {
+                name: 'Emily Davis',
+                role: 'Head of Human Resources',
+                img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80'
+              },
+              {
+                name: 'Michael Chen',
+                role: 'Lead Engineer',
+                img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80'
+              }
+            ].map((member, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="bg-[#1A1C1E] border border-white/10 rounded overflow-hidden shadow-lg group hover:-translate-y-2 hover:shadow-solar-red/10 transition-all duration-300 flex flex-col"
+              >
+                <div className="h-64 overflow-hidden relative">
+                  <img 
+                    src={member.img} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"
+                  />
+                </div>
+                <div className="p-6 text-center flex-grow flex flex-col justify-center bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] border-t border-white/20">
+                  <h3 className="font-headline-md text-xl font-bold text-white uppercase tracking-tight drop-shadow-sm">{member.name}</h3>
+                  <p className="font-body-md text-xs text-solar-red font-bold uppercase tracking-widest mt-2">{member.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
       </div>
     </div>
   );

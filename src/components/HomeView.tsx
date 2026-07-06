@@ -287,6 +287,28 @@ export default function HomeView({
         </div>
       </section>
 
+      {/* Calculator Section */}
+      <section
+        ref={calculatorSectionRef}
+        id="calculator"
+        className="py-24 bg-white relative overflow-hidden scroll-mt-20 border-b border-gray-100"
+      >
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--color-industrial-charcoal) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+        <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="mb-12 text-center"
+          >
+             <h2 className="font-display-lg text-3xl font-extrabold uppercase text-industrial-charcoal mb-4">Calculate Your Savings</h2>
+             <p className="font-sans text-gray-500">Estimate your potential energy savings by switching to solar power with us.</p>
+          </motion.div>
+          <SavingsCalculator onGetProposal={handleGetProposal} />
+        </div>
+      </section>
+
       {/* Why Choose Us Section */}
       <section className="py-20 bg-industrial-charcoal text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
@@ -360,27 +382,7 @@ export default function HomeView({
         </motion.div>
       </section>
 
-      {/* Calculator Section */}
-      <section
-        ref={calculatorSectionRef}
-        id="calculator"
-        className="py-24 bg-white relative overflow-hidden scroll-mt-20 border-b border-gray-100"
-      >
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--color-industrial-charcoal) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-        <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-            className="mb-12 text-center"
-          >
-             <h2 className="font-display-lg text-3xl font-extrabold uppercase text-industrial-charcoal mb-4">Calculate Your Savings</h2>
-             <p className="font-sans text-gray-500">Estimate your potential energy savings by switching to solar power with us.</p>
-          </motion.div>
-          <SavingsCalculator onGetProposal={handleGetProposal} />
-        </div>
-      </section>
+
     </div>
   );
 }

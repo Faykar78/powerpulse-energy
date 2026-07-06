@@ -19,14 +19,6 @@ export default function HomeView({
   onSelectProposalData,
 }: HomeViewProps) {
   const calculatorSectionRef = useRef<HTMLDivElement>(null);
-  const [showContactPopup, setShowContactPopup] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowContactPopup(true);
-    }, 500); // slight delay for better UX
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleScrollToCalculator = () => {
     if (calculatorSectionRef.current) {
@@ -57,39 +49,6 @@ export default function HomeView({
 
   return (
     <div className="w-full">
-      <AnimatePresence>
-        {showContactPopup && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-[#fbf7f7] rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden relative flex flex-col"
-            >
-              <button
-                onClick={() => setShowContactPopup(false)}
-                className="absolute top-4 right-4 z-50 p-2 bg-white shadow hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-              <div className="overflow-y-auto flex-1 flex flex-col">
-                <ContactView
-                  proposalData={null}
-                  clearProposalData={() => {}}
-                  setChatbotOpen={setChatbotOpen}
-                  setChatbotWelcomeMessage={setChatbotWelcomeMessage}
-                  isCompact={true}
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
